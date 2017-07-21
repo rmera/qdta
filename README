@@ -24,7 +24,7 @@ The optional parameter skip_first will cause traj_plot not to consider the first
 
 traj_plot("ref,sel1",MD.RMSD,reference_selection=1)
 
-Will produce a plot of the RMSD of each state of sel1 vs the first state of ref vs the state number for sel1.
+Will produce a plot of the RMSD between each state of sel1 and the first state of ref vs the state number for sel1.
 
 
 traj_plot("s1,s2",MD.Distance)
