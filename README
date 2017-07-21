@@ -1,15 +1,13 @@
 This is the Quick and Dirty Trajectory Analysis PyMOL script.
 
 As of now, it consists of the function traj_plot, which allows to plot any function of one or more  pymol selection (that returns one number) against the
-the states of the selection.
-
-A couple of functions are implemented in the class MD. For instance, if you feed traj_plot with a reference selection, a test selection and the function MD.RMSD, it will plot the RMSD of the test vs the reference along all states for the test, vs the state number. It should be trivial to implement your own functions (and feel free to pull-request if you implemente something you think is useful!)
-
-In addition to PyMOL, the script requires Numpy and Matplotlib. Unfortunately, it has only been tested in Python 3, with which PyMOL is compiled in Fedora. I believe it will work on Python 2 also. If it doesn't and you want to fix that, I'll be happy to add a new Python2 branch.
+the states of the selection, plus a few helpers.
 
 Everything is done in a quick and dirty(tm) way, hence the name. Sorry about that :-)
 
 ** Instructions:
+
+In addition to PyMOL, the script requires Numpy and Matplotlib. Unfortunately, it has only been tested in Python 3, with which PyMOL is compiled in Fedora. I believe it will work on Python 2 also. If it doesn't and you want to fix that, I'll be happy to add a new Python2 branch.
 
 After loading the program in PyMOL you get the following:
 
@@ -17,7 +15,7 @@ traj_plot("selection1,selection2",function,extra=[],skip_first=False,reference_s
 
 This function takes a string with selection names separated by commas, and a function. The function needs to take one or more selection, plus a list of extra parameters (given to plot_traj with the optional "extra"), and return one number (only). traj_plot will plot the result of applying the function to each state of the selections given against the state numbers. It may be that the function requires one or more selections to be "reference", i.e. to be used in their first state for all iterations of traj_plot (this is the case with the reference structres in an RMSD calculation). For that you can set the optional parameter reference_selections to N, and the first N selections will be considered reference. 
 
-Some functions are already implemented in the MD class. As of now: Distance (distance between two atoms), Angle (angle between two atoms) and RMSD (RMSD between two selections, which must be superimposed already). One can quite trivially implement one's own functions to be used by traj_plot. If you do this and think your function could be of interest, please let me know to include it in the script.
+Some functions are already implemented in the MD class. As of now: Distance (distance between two atoms), Angle (angle between two atoms) and RMSD (RMSD between two selections, which must be superimposed already). One can quite trivially implement one's own functions to be used by traj_plot. If you do this and think your function could be of interest, please let me know to include it in the script (or file a pull request, or start your own repo with your functions!).
 
 The optional parameter function_info will be used as a label for the y-coordinate of the plot.
 The optional parameter skip_first will cause traj_plot not to consider the first state of any selection (except for the reference ones!).
