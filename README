@@ -9,10 +9,44 @@ In addition to PyMOL, the script requires Numpy and Matplotlib. Unfortunately, i
 
 Everything is done in a quick and dirty(tm) way, hence the name. Sorry about that :-)
 
+** Instructions:
+
+After loading the program in PyMOL you get the following:
+
+traj_plot("selection1,selection2",function,extra=[],skip_first=False,reference_selections=-1,function_info="function")
+
+This function takes a string with selection names separated by commas, and a function. The function needs to take one or more selection, plus a list of extra parameters (given to plot_traj with the optional "extra"), and return one number (only). traj_plot will plot the result of applying the function to each state of the selections given against the state numbers. It may be that the function requires one or more selections to be "reference", i.e. to be used in their first state for all iterations of traj_plot (this is the case with the reference structres in an RMSD calculation). For that you can set the optional parameter reference_selections to N, and the first N selections will be considered reference. 
+
+Some functions are already implemented in the MD class. As of now: Distance (distance between two atoms), Angle (angle between two atoms) and RMSD (RMSD between two selections, which must be superimposed already). One can quite trivially implement one's own functions to be used by traj_plot. If you do this and think your function could be of interest, please let me know to include it in the script.
+
+The optional parameter function_info will be used as a label for the y-coordinate of the plot.
+The optional parameter skip_first will cause traj_plot not to consider the first state of any selection (except for the reference ones!).
+
+* Example use:
+
+traj_plot("ref,sel1",MD.RMSD,reference_selection=1)
+
+Will produce a plot of the RMSD of each state of sel1 vs the first state of ref vs the state number for sel1.
 
 
+traj_plot("s1,s2",MD.Distance)
 
-QDT: A PyMOL script for quick analysis of MD trajectories.
+Will plot the distance between the first atom of selections s1 and s2 vs the number of states of both selections (they are assumed to be the same).
+
+
+* Helper functions
+
+What if I want to calculate the distance between the center of mass of two selections, instead of between two atoms?
+The helper function:
+
+com_object("selection") 
+will produce an object containing a pseudoatom at the center of mass of selection. The object will have as many states as the original selection, each with the corresponding center of mass.
+
+get_ref("selection",state=1) 
+Will create a new object containing only one state for the selection given (the first state by default, but one can change it with the parameter "state". Useful for RMSD calculation. 
+
+
+QDTA: A PyMOL script for quick analysis of MD trajectories.
 Copyright (C) 2017  Raul Mera A.
 
 This program is free software; you can redistribute it and/or

@@ -64,7 +64,7 @@ class MD:
     #RMSD returns, well, the RMSD between two selections. They have to have the same amount of atoms, and
     #be superimposed already. The point of this is to use it in a trajectory, which you should have already superimposed with a reference
     #structure, which would be your first selection.
-    #If you use this function with plot_traj you need to call it with non_local=1
+    #If you use this function with plot_traj you need to call it with reference_selections=1
     def RMSD(sels,extra):
         if len(sels)<2:
             raise("RMSD needs two selections!") 
@@ -114,18 +114,18 @@ def get_ref(selection,state=1):
 #plot_traj aplies function to selections in al tcll their states and plots the resulting values
 #agains the state number.
 #functions has to take a list of chempy objects (one per selection) for a given state plus a list of extra parameters and return ONE numerical value. 
-#If non_local>0 first N selections will be given always in the first state
+#If reference_selections>0 first N selections will be given always in the first state
 #the functions included in the MD class are ready to be used here, but you can easily define your own.
 #The optional extra parameter is a list of additional parameters for the function called. It is empty by default.
 #The optional function_info will be used as a label for the y-axis of theplot.
 #Often the first state is just a reference, which is difficult to correctly take away in pymol (see our del_first for an attempt).
-def traj_plot(selections,function, extra=[] ,non_local=-1,function_info="Function",skip_first=False):
+def traj_plot(selections,function, extra=[] ,reference_selections=-1,function_info="Function",skip_first=False):
     if selections=="":
-        print('Usage:  traj_plot(selections,function, extra=[] ,non_local=-1,function_info="Function",skip_first=False)')
+        print('Usage:  traj_plot(selections,function, extra=[] ,reference_selections=-1,function_info="Function",skip_first=False)')
         exit(1) 
     #We kinda assume that all selections given have the same number of states!
     selections=selections.split(",") 
-    # If non_local>0 the first non_local selections will only have one state
+    # If reference_selections>0 the first reference_selections selections will only have one state
     #the last one should always have the full states.
     states=cmd.count_states(selections[-1])
     #print(states) ########################################################
@@ -139,8 +139,8 @@ def traj_plot(selections,function, extra=[] ,non_local=-1,function_info="Functio
         objs=[]
         for j,v in enumerate(selections):
             k=i
-            if j <= non_local-1:
-                k=1 #we overwrite the state index for the first N=non_local selections
+            if j <= reference_selections-1:
+                k=1 #we overwrite the state index for the first N=reference_selections selections
             objs.append(cmd.get_model(v,k))
         x.append(i)
         y.append(function(objs,extra))
