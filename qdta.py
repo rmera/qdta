@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #A few functions to allow quick and interactive analysis of MD trajectories in PyMOL.
-#I indent with tabs. Not sorry about that.
+#I indent with tabs. Just use search/replace to change them to spaces if you prefer it that way.
 
 import numpy as np
 import matplotlib
@@ -111,7 +111,7 @@ def get_ref(selection,state=1):
 
     
 
-#plot_traj aplies function to selections in al tcll their states and plots the resulting values
+#traj_plot applies function to selections in all their states and plots the resulting values
 #agains the state number.
 #functions has to take a list of chempy objects (one per selection) for a given state plus a list of extra parameters and return ONE numerical value. 
 #If reference_selections>0 first N selections will be given always in the first state
