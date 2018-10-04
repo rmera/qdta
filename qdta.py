@@ -2,7 +2,7 @@
 
 #A few functions to allow quick and interactive analysis of MD trajectories in PyMOL.
 #I indent with tabs. Just use search/replace to change them to spaces if you prefer it that way.
-
+from __future__ import print_function
 import numpy as np
 import matplotlib
 from matplotlib.backends import backend_tkagg
@@ -15,8 +15,8 @@ def _new_figure_manager(num, *args, **kwargs):
     # import pymol
     if pymol._ext_gui is None:
         return new_figure_manager(num, *args, **kwargs)
-    backend_tkagg.show._needmain = False
-    import tkinter as Tk
+   # backend_tkagg.show._needmain = False
+    import Tkinter as Tk
     from matplotlib.figure import Figure
     from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, FigureManagerTkAgg
     FigureClass = kwargs.pop('FigureClass', Figure)
@@ -133,6 +133,7 @@ def traj_plot(selections,function, extra=[] ,reference_selections=-1,function_in
     y=[]
     x=[]
     ylabel=""
+    mdsample=MD()
     for i in range(1,states+1):
         if i==1 and skip_first:
             continue
@@ -143,7 +144,7 @@ def traj_plot(selections,function, extra=[] ,reference_selections=-1,function_in
                 k=1 #we overwrite the state index for the first N=reference_selections selections
             objs.append(cmd.get_model(v,k))
         x.append(i)
-        y.append(function(objs,extra))
+        y.append(function.im_func(objs,extra))
     X=np.array(x)
     Y=np.array(y)
     #print("X and Y", X, Y)####################
